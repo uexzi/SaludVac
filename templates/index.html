@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SaludVac | Compilador de vacunación</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/app.js') }}"
+            defer></script>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="brand">
+            <img class="brand-logo"
+                 src="{{ url_for('static', filename='img/LogoSaludVac.png') }}"
+                 alt="Logo de SaludVac">
+            <div>
+                <h2>SaludVac</h2>
+                <span>Salud pública digital</span>
+            </div>
+        </div>
+
+        <p class="menu-label">MENÚ PRINCIPAL</p>
+
+        <nav>
+            <a href="#inicio" class="nav-item active">▦ Inicio</a>
+            <a href="#compilador" class="nav-item">⌘ Compilador DSL</a>
+            <a href="#pacientes" class="nav-item">♙ Pacientes</a>
+            <a href="#reportes" class="nav-item">▤ Reportes</a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <span class="status-dot"></span>
+            Sistema de demostración
+        </div>
+    </aside>
+
+    <main class="main-content" id="inicio">
+        <header class="topbar">
+            <div>
+                <span class="breadcrumb">Inicio / Panel principal</span>
+                <h1>Compilador de esquemas de vacunación</h1>
+            </div>
+            <div class="user-badge">VP</div>
+        </header>
+
+        <section class="welcome">
+            <div>
+                <span class="eyebrow">SISTEMAS DE SALUD PÚBLICA</span>
+                <h2>Bienvenido a SaludVac</h2>
+                <p>
+                    Define reglas de vacunación, analiza su estructura
+                    y consulta los resultados del compilador.
+                </p>
+            </div>
+            <img class="welcome-icon"
+                 src="{{ url_for('static', filename='img/LogoSaludVac.png') }}"
+                 alt="Logo de SaludVac">
+        </section>
+
+        <section class="stats">
+            <article class="stat-card">
+                <span class="stat-icon">⌘</span>
+                <p>Lenguaje</p>
+                <h3>DSL</h3>
+                <small>Reglas de vacunación</small>
+            </article>
+
+            <article class="stat-card">
+                <span class="stat-icon">⌕</span>
+                <p>Análisis</p>
+                <h3>3 fases</h3>
+                <small>Léxico, sintáctico y semántico</small>
+            </article>
+
+            <article class="stat-card">
+                <span class="stat-icon">✓</span>
+                <p>Verificación</p>
+                <h3>Por reglas</h3>
+                <small>Evaluación configurable</small>
+            </article>
+        </section>
+
+        <section class="workspace" id="compilador">
+            <div class="section-heading">
+                <div>
+                    <h2>Editor del lenguaje DSL</h2>
+                    <p>Escribe las reglas que deseas analizar.</p>
+                </div>
+                <span class="tag">VaxLang · Propuesta inicial</span>
+            </div>
+
+            <div class="editor">
+                <div class="editor-header">
+                    <span>reglas.vax</span>
+                    <span>DSL</span>
+                </div>
+
+                <textarea id="source-code"
+                          spellcheck="false"
+                          aria-label="Código fuente del DSL">A_LOS 2 MESES: PENTAVALENTE, DOSIS 1;</textarea>
+
+                <div class="editor-footer">
+                    <span id="line-count">Línea 1</span>
+                    <span>UTF-8</span>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button id="analyze-button" class="primary-button">
+                    ▶ Analizar programa
+                </button>
+                <button id="clear-button" class="secondary-button">
+                    Limpiar editor
+                </button>
+            </div>
+
+            <div id="analysis-message" class="message" role="status">
+                Escribe una regla y ejecuta el análisis cuando esté disponible.
+            </div>
+        </section>
+
+        <section class="results">
+            <div class="section-heading">
+                <div>
+                    <h2>Resultados del compilador</h2>
+                    <p>Los resultados aparecerán aquí al conectar los analizadores.</p>
+                </div>
+            </div>
+
+            <div class="result-grid">
+                <article class="result-card">
+                    <div class="result-title">
+                        <span class="result-icon">01</span>
+                        <h3>Análisis léxico</h3>
+                    </div>
+                    <p>Reconocimiento de tokens y palabras reservadas.</p>
+                    <div class="empty-state" id="lexical-results">
+                        Pendiente de ejecución
+                    </div>
+                </article>
+
+                <article class="result-card">
+                    <div class="result-title">
+                        <span class="result-icon">02</span>
+                        <h3>Análisis sintáctico</h3>
+                    </div>
+                    <p>Validación de la gramática del DSL.</p>
+                    <div class="empty-state" id="syntax-results">
+                        Pendiente de ejecución
+                    </div>
+                </article>
+
+                <article class="result-card">
+                    <div class="result-title">
+                        <span class="result-icon">03</span>
+                        <h3>Análisis semántico</h3>
+                    </div>
+                    <p>Validación de campos, tipos y reglas.</p>
+                    <div class="empty-state" id="semantic-results">
+                        Pendiente de ejecución
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <footer class="page-footer" id="reportes">
+            SaludVac · Proyecto académico de compiladores y salud pública.
+            Las reglas de ejemplo no constituyen recomendaciones médicas.
+        </footer>
+    </main>
+</body>
+</html>
