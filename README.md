@@ -1,7 +1,5 @@
 # SaludVac
 
-![Logo de SaludVac](static/img/LogoSaludVac.png)
-
 **SaludVac** es una aplicación web académica que implementa un compilador para un lenguaje específico de dominio (DSL) orientado a esquemas de vacunación. Permite escribir reglas, analizarlas y visualizar el resultado de las fases léxica, sintáctica y semántica desde una interfaz web.
 
 > Las reglas incluidas son ejemplos técnicos y no sustituyen recomendaciones médicas oficiales.
