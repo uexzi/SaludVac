@@ -1,176 +1,159 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>SaludVac | Compilador de vacunación</title>
-
+    <meta name="theme-color" content="#f3faf5">
+    <title>SaludVac | Gestión de esquemas de vacunación</title>
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/styles.css') }}">
-    <script src="{{ url_for('static', filename='js/app.js') }}"
-            defer></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
 </head>
-<body>
-    <aside class="sidebar">
-        <div class="brand">
-            <img class="brand-logo"
-                 src="{{ url_for('static', filename='img/LogoSaludVac.png') }}"
-                 alt="Logo de SaludVac">
+<body class="health-app">
+    <aside class="care-sidebar">
+        <div class="care-brand">
+            <div class="care-brand-mark">
+                <img src="{{ url_for('static', filename='img/LogoSaludVac.png') }}"
+                     alt="Logo de SaludVac">
+            </div>
             <div>
-                <h2>SaludVac</h2>
-                <span>Salud pública digital</span>
+                <h1>SaludVac</h1>
+                <span>Gestión de vacunación</span>
             </div>
         </div>
 
-        <p class="menu-label">MENÚ PRINCIPAL</p>
+        <div class="care-profile">
+            <div class="care-avatar">PS</div>
+            <div><strong>Personal de salud</strong><span>Área clínica</span></div>
+            <i class="care-online" aria-label="Sesión activa"></i>
+        </div>
 
-        <nav>
-            <a href="#inicio" class="nav-item active">▦ Inicio</a>
-            <a href="#compilador" class="nav-item">⌘ Compilador DSL</a>
-            <a href="#pacientes" class="nav-item">♙ Pacientes</a>
-            <a href="#reportes" class="nav-item">▤ Reportes</a>
+        <p class="care-nav-label">MENÚ PRINCIPAL</p>
+        <nav class="care-nav" aria-label="Navegación del panel clínico">
+            <a class="is-active" href="#panel"><span>▦</span> Resumen</a>
+            <a href="#esquema"><span>＋</span> Esquema de vacunación</a>
+            <a href="#validacion"><span>✓</span> Validar esquema</a>
         </nav>
 
-        <div class="sidebar-footer">
-            <span class="status-dot"></span>
-            Sistema de demostración
+        <div class="care-admin-link">
+            <span class="care-admin-icon">⚙</span>
+            <div><strong>Administración</strong><span>Reglas y validación técnica</span></div>
+            <a href="{{ url_for('administracion') }}" aria-label="Abrir área de administración">→</a>
+        </div>
+
+        <div class="care-sidebar-note">
+            <span>i</span>
+            <p>Esta herramienta ayuda a organizar esquemas. Consulta siempre la normativa vigente.</p>
         </div>
     </aside>
 
-    <main class="main-content" id="inicio">
-        <header class="topbar">
+    <main class="care-main" id="panel">
+        <header class="care-topbar">
             <div>
-                <span class="breadcrumb">Inicio / Panel principal</span>
-                <h1>Compilador de esquemas de vacunación</h1>
+                <p>Panel clínico <span>/</span> Esquemas de vacunación</p>
+                <h2>Hola, personal de salud</h2>
             </div>
-            <div class="user-badge">VP</div>
+            <div class="care-topbar-actions">
+                <button class="care-help" type="button" aria-label="Ayuda">?</button>
+                <span class="care-date">Gestión de esquema</span>
+            </div>
         </header>
 
-        <section class="welcome">
-            <div>
-                <span class="eyebrow">SISTEMAS DE SALUD PÚBLICA</span>
-                <h2>Bienvenido a SaludVac</h2>
-                <p>
-                    Define reglas de vacunación, analiza su estructura
-                    y consulta los resultados del compilador.
-                </p>
+        <section class="care-hero">
+            <div class="care-hero-content">
+                <p class="care-kicker"><span></span> ESQUEMA DE DEMOSTRACIÓN</p>
+                <h2>Organiza cada dosis de forma <em>clara y visual.</em></h2>
+                <p>Agrega las vacunas al esquema, revisa las dosis programadas y valida el conjunto sin necesidad de usar código.</p>
+                <a class="care-hero-action" href="#esquema">Gestionar el esquema <span>↓</span></a>
             </div>
-            <img class="welcome-icon"
-                 src="{{ url_for('static', filename='img/LogoSaludVac.png') }}"
-                 alt="Logo de SaludVac">
+            <div class="care-hero-visual" aria-hidden="true">
+                <div class="care-logo-orb">
+                    <img src="{{ url_for('static', filename='img/LogoSaludVac.png') }}" alt="">
+                </div>
+                <div class="care-hero-stat"><strong id="hero-rule-count">10</strong><span>dosis en el esquema</span></div>
+                <span class="care-dot dot-a"></span><span class="care-dot dot-b"></span>
+            </div>
         </section>
 
-        <section class="stats">
-            <article class="stat-card">
-                <span class="stat-icon">⌘</span>
-                <p>Lenguaje</p>
-                <h3>DSL</h3>
-                <small>Reglas de vacunación</small>
+        <section class="care-summary" aria-label="Resumen del esquema">
+            <article>
+                <span class="care-summary-icon green">⌁</span>
+                <div><p>Dosis registradas</p><h3 id="summary-rule-count">10</h3><span>En el esquema actual</span></div>
             </article>
-
-            <article class="stat-card">
-                <span class="stat-icon">⌕</span>
-                <p>Análisis</p>
-                <h3>3 fases</h3>
-                <small>Léxico, sintáctico y semántico</small>
+            <article>
+                <span class="care-summary-icon blue">◷</span>
+                <div><p>Próxima etapa</p><h3 id="summary-next-age">2 meses</h3><span id="summary-next-vaccine">3 vacunas programadas</span></div>
             </article>
-
-            <article class="stat-card">
-                <span class="stat-icon">✓</span>
-                <p>Verificación</p>
-                <h3>Por reglas</h3>
-                <small>Evaluación configurable</small>
+            <article>
+                <span class="care-summary-icon gold">✓</span>
+                <div><p>Estado de revisión</p><h3 id="summary-validation">Pendiente</h3><span>Valida el esquema al finalizar</span></div>
             </article>
         </section>
 
-        <section class="workspace" id="compilador">
-            <div class="section-heading">
+        <section class="care-section" id="esquema">
+            <div class="care-section-heading">
                 <div>
-                    <h2>Editor del lenguaje DSL</h2>
-                    <p>Escribe las reglas que deseas analizar.</p>
+                    <p class="care-kicker"><span></span> CONSTRUCTOR DE ESQUEMA</p>
+                    <h2>Agregar una dosis</h2>
+                    <p>Selecciona los datos clínicos de la dosis. Se integrará automáticamente al esquema visual.</p>
                 </div>
-                <span class="tag">VaxLang · Propuesta inicial</span>
+                <button id="restore-scheme-button" class="care-text-button" type="button">↺ Restaurar demostración</button>
             </div>
 
-            <div class="editor">
-                <div class="editor-header">
-                    <span>reglas.vax</span>
-                    <span>DSL</span>
-                </div>
+            <div class="care-builder-layout">
+                <form class="care-rule-form" id="rule-form">
+                    <div class="care-form-heading"><span>＋</span><div><h3>Nueva dosis</h3><p>Completa los datos para agregarla.</p></div></div>
+                    <label for="age-input">Edad de aplicación
+                        <span class="care-input-wrap"><input id="age-input" type="number" min="1" max="240" value="2" required><em>meses</em></span>
+                    </label>
+                    <label for="vaccine-input">Vacuna o biológico
+                        <select id="vaccine-input" required>
+                            <option value="PENTAVALENTE">Pentavalente</option>
+                            <option value="ROTAVIRUS">Rotavirus</option>
+                            <option value="NEUMOCOCO">Neumococo</option>
+                            <option value="INFLUENZA">Influenza</option>
+                            <option value="SRP">SRP</option>
+                            <option value="REFUERZO_DPT">Refuerzo DPT</option>
+                        </select>
+                    </label>
+                    <label for="dose-input">Número de dosis
+                        <select id="dose-input" required>
+                            <option value="1">Primera dosis</option>
+                            <option value="2">Segunda dosis</option>
+                            <option value="3">Tercera dosis</option>
+                            <option value="4">Cuarta dosis</option>
+                        </select>
+                    </label>
+                    <button class="care-add-button" type="submit"><span>＋</span> Agregar al esquema</button>
+                    <p class="care-form-note" id="form-feedback"><span>i</span> Se mostrará una alerta si la dosis ya existe.</p>
+                </form>
 
-                <textarea id="source-code"
-                          spellcheck="false"
-                          aria-label="Código fuente del DSL">A_LOS 2 MESES: PENTAVALENTE, DOSIS 1;</textarea>
-
-                <div class="editor-footer">
-                    <span id="line-count">Línea 1</span>
-                    <span>UTF-8</span>
-                </div>
-            </div>
-
-            <div class="actions">
-                <button id="analyze-button" class="primary-button">
-                    ▶ Analizar programa
-                </button>
-                <button id="clear-button" class="secondary-button">
-                    Limpiar editor
-                </button>
-            </div>
-
-            <div id="analysis-message" class="message" role="status">
-                Escribe una regla y ejecuta el análisis cuando esté disponible.
+                <section class="care-scheme-board" aria-label="Esquema de vacunación actual">
+                    <header class="care-board-header">
+                        <div><h3>Esquema actual</h3><p>Organizado por edad de aplicación</p></div>
+                        <span id="scheme-count-badge">10 dosis</span>
+                    </header>
+                    <div id="schedule-list" class="care-schedule-list" aria-live="polite"></div>
+                </section>
             </div>
         </section>
 
-        <section class="results">
-            <div class="section-heading">
-                <div>
-                    <h2>Resultados del compilador</h2>
-                    <p>Los resultados aparecerán aquí al conectar los analizadores.</p>
-                </div>
+        <section class="care-validation-section" id="validacion">
+            <div class="care-validation-copy">
+                <p class="care-kicker"><span></span> REVISIÓN DEL ESQUEMA</p>
+                <h2>¿El esquema está completo?</h2>
+                <p>Verifica que las edades, dosis y registros no tengan inconsistencias antes de utilizarlo.</p>
+                <button id="validate-scheme-button" class="care-validate-button" type="button"><span>✓</span> Validar esquema ahora</button>
             </div>
-
-            <div class="result-grid">
-                <article class="result-card">
-                    <div class="result-title">
-                        <span class="result-icon">01</span>
-                        <h3>Análisis léxico</h3>
-                    </div>
-                    <p>Reconocimiento de tokens y palabras reservadas.</p>
-                    <div class="empty-state" id="lexical-results">
-                        Pendiente de ejecución
-                    </div>
-                </article>
-
-                <article class="result-card">
-                    <div class="result-title">
-                        <span class="result-icon">02</span>
-                        <h3>Análisis sintáctico</h3>
-                    </div>
-                    <p>Validación de la gramática del DSL.</p>
-                    <div class="empty-state" id="syntax-results">
-                        Pendiente de ejecución
-                    </div>
-                </article>
-
-                <article class="result-card">
-                    <div class="result-title">
-                        <span class="result-icon">03</span>
-                        <h3>Análisis semántico</h3>
-                    </div>
-                    <p>Validación de campos, tipos y reglas.</p>
-                    <div class="empty-state" id="semantic-results">
-                        Pendiente de ejecución
-                    </div>
-                </article>
+            <div class="care-validation-result" id="validation-result" role="status">
+                <span class="care-result-icon">!</span>
+                <div><h3>Revisión pendiente</h3><p>Agrega o modifica las dosis y después valida el esquema.</p></div>
             </div>
         </section>
 
-        <footer class="page-footer" id="reportes">
-            SaludVac · Proyecto académico de compiladores y salud pública.
-            Las reglas de ejemplo no constituyen recomendaciones médicas.
+        <footer class="care-footer">
+            <span>SaludVac · Herramienta académica de gestión de esquemas</span>
+            <a href="{{ url_for('administracion') }}">Ir a administración técnica →</a>
         </footer>
     </main>
 </body>

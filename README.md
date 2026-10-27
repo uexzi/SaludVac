@@ -1,6 +1,8 @@
 # SaludVac
 
-**SaludVac** es una aplicación web académica que implementa un compilador para un lenguaje específico de dominio (DSL) orientado a esquemas de vacunación. Permite escribir reglas, analizarlas y visualizar el resultado de las fases léxica, sintáctica y semántica desde una interfaz web.
+![Logo de SaludVac](static/img/LogoSaludVac.png)
+
+**SaludVac** es una aplicación web académica para organizar esquemas de vacunación y validar sus reglas. Incluye un panel visual para personal de salud y un área técnica independiente para administrar el lenguaje específico de dominio (DSL).
 
 > Las reglas incluidas son ejemplos técnicos y no sustituyen recomendaciones médicas oficiales.
 
@@ -47,6 +49,16 @@ python app.py
 
 Después, abre [http://127.0.0.1:5000/](http://127.0.0.1:5000/) en el navegador.
 
+## Interfaces de la aplicación
+
+### Panel clínico (`/`)
+
+Dirigido al personal de salud. Permite agregar, quitar y revisar dosis desde formularios visuales, sin escribir código. El esquema se organiza automáticamente por edad y puede validarse para detectar dosis duplicadas o datos inconsistentes.
+
+### Administración (`/administracion`)
+
+Dirigida al personal administrador del sistema. Incluye el editor de reglas DSL y el resultado detallado de los análisis léxico, sintáctico y semántico.
+
 ## Lenguaje SaludVac DSL
 
 Cada regla registra una vacuna, la edad en meses y el número de dosis.
@@ -84,9 +96,12 @@ SaludVac/
 ├── static/
 │   ├── css/styles.css      # Estilos de la interfaz
 │   ├── img/                # Logo e imágenes
-│   └── js/app.js           # Lógica del cliente
+│   └── js/
+│       ├── app.js          # Lógica del área administrativa
+│       └── dashboard.js    # Lógica del panel clínico
 ├── templates/
-│   └── index.html          # Página principal
+│   ├── index.html          # Panel clínico
+│   └── admin.html          # Área de administración
 └── requirements.txt        # Dependencias del proyecto
 ```
 

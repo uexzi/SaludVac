@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b3d2e">
+    <title>Administración | SaludVac</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</head>
+<body class="admin-app">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-mark">
+                <img src="{{ url_for('static', filename='img/LogoSaludVac.png') }}"
+                     alt="Logo de SaludVac">
+            </div>
+            <div class="brand-copy">
+                <h2>SaludVac</h2>
+                <span>Salud pública digital</span>
+            </div>
+        </div>
+
+        <div class="workspace-switcher" aria-label="Espacio de trabajo actual">
+            <span class="workspace-mark">SV</span>
+            <span>
+                <small>ESPACIO DE TRABAJO</small>
+                <strong>Administración</strong>
+            </span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
+        </div>
+
+        <p class="menu-label">NAVEGACIÓN</p>
+        <nav aria-label="Navegación de administración">
+            <a href="{{ url_for('inicio') }}" class="nav-item">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z"/></svg>
+                </span>
+                Panel clínico
+            </a>
+            <a href="#compilador" class="nav-item active">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 9 4 12l4 3M16 9l4 3-4 14"/></svg>
+                </span>
+                Reglas DSL
+                <span class="nav-active-dot"></span>
+            </a>
+        </nav>
+
+        <div class="sidebar-card">
+            <span class="sidebar-card-icon">⚙</span>
+            <p>Área administrativa</p>
+            <span>Valida la definición técnica de las reglas antes de ponerlas en uso.</span>
+        </div>
+
+        <div class="sidebar-footer">
+            <span class="status-dot"></span>
+            Motor de análisis disponible
+        </div>
+    </aside>
+
+    <main class="main-content" id="inicio">
+        <header class="topbar">
+            <div>
+                <div class="breadcrumb">
+                    <a href="{{ url_for('inicio') }}">SaludVac</a>
+                    <span aria-hidden="true">/</span>
+                    <strong>Administración</strong>
+                </div>
+                <h1>Gestión técnica de reglas</h1>
+            </div>
+            <a class="admin-return" href="{{ url_for('inicio') }}">← Volver al panel clínico</a>
+        </header>
+
+        <section class="admin-hero">
+            <div>
+                <p class="section-eyebrow"><span></span> CONFIGURACIÓN DEL SISTEMA</p>
+                <h2>Valida las reglas antes de publicarlas.</h2>
+                <p>Esta área está destinada al personal administrador que mantiene el lenguaje de reglas de SaludVac.</p>
+            </div>
+            <span class="admin-hero-icon">⌘</span>
+        </section>
+
+        <section class="workspace" id="compilador">
+            <div class="section-heading">
+                <div>
+                    <p class="section-eyebrow"><span></span> EDITOR DE REGLAS</p>
+                    <h2>Compilador SaludVac DSL</h2>
+                    <p>Modifica el esquema técnico y confirma su validez en las tres fases de análisis.</p>
+                </div>
+                <span class="language-tag"><span></span> Modo administrador</span>
+            </div>
+
+            <div class="workspace-layout">
+                <div class="editor-area">
+                    <div class="editor">
+                        <div class="editor-header">
+                            <div><span class="file-mark"></span><strong>esquema.vax</strong><small>· Borrador</small></div>
+                            <span class="editor-language">DSL</span>
+                        </div>
+                        <textarea id="source-code" spellcheck="false"
+                                  aria-label="Código fuente del DSL" rows="10">A_LOS 2 MESES: PENTAVALENTE, DOSIS 1;
+A_LOS 2 MESES: ROTAVIRUS, DOSIS 1;
+A_LOS 2 MESES: NEUMOCOCO, DOSIS 1;
+A_LOS 4 MESES: PENTAVALENTE, DOSIS 2;
+A_LOS 4 MESES: ROTAVIRUS, DOSIS 2;
+A_LOS 4 MESES: NEUMOCOCO, DOSIS 2;
+A_LOS 6 MESES: PENTAVALENTE, DOSIS 3;
+A_LOS 6 MESES: INFLUENZA, DOSIS 1;
+A_LOS 12 MESES: SRP, DOSIS 1;
+A_LOS 18 MESES: REFUERZO_DPT, DOSIS 1;</textarea>
+                        <div class="editor-footer">
+                            <span id="line-count">Línea 1</span>
+                            <span>UTF-8 · Espacios: 4</span>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button id="analyze-button" class="primary-button"><span>▶</span> Validar reglas</button>
+                        <button id="clear-button" class="secondary-button"><span>↺</span> Limpiar editor</button>
+                        <button id="load-example-button" class="tertiary-button"><span>✦</span> Cargar 10 reglas</button>
+                    </div>
+                    <div id="analysis-message" class="message" role="status">
+                        <span aria-hidden="true">i</span>
+                        <span class="message-text" id="analysis-message-text">Edita las reglas y ejecuta la validación cuando estés listo.</span>
+                    </div>
+                </div>
+
+                <aside class="analysis-dock" id="resultados" aria-label="Resultados del compilador">
+                    <div class="dock-heading">
+                        <div>
+                            <p class="section-eyebrow"><span></span> VALIDACIÓN TÉCNICA</p>
+                            <h3>Resultados del compilador</h3>
+                        </div>
+                        <span class="results-state" id="results-state"><i></i> Listo</span>
+                    </div>
+                    <div class="result-tabs" role="tablist" aria-label="Fases del análisis">
+                        <button class="result-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="result-panel-lexical" data-result-tab="lexical"><span class="tab-number">01</span><span>Léxico</span><i class="tab-status" aria-hidden="true"></i></button>
+                        <button class="result-tab" type="button" role="tab" aria-selected="false" aria-controls="result-panel-syntax" data-result-tab="syntax"><span class="tab-number">02</span><span>Sintaxis</span><i class="tab-status" aria-hidden="true"></i></button>
+                        <button class="result-tab" type="button" role="tab" aria-selected="false" aria-controls="result-panel-semantic" data-result-tab="semantic"><span class="tab-number">03</span><span>Semántica</span><i class="tab-status" aria-hidden="true"></i></button>
+                    </div>
+                    <div class="result-panels">
+                        <section class="result-panel is-active" id="result-panel-lexical" role="tabpanel" data-result-panel="lexical">
+                            <div class="panel-intro"><span class="panel-icon">⌘</span><div><h4>Análisis léxico</h4><p>Tokens y caracteres reconocidos.</p></div></div>
+                            <div class="empty-state" id="lexical-results">Ejecuta la validación para ver los tokens.</div>
+                        </section>
+                        <section class="result-panel" id="result-panel-syntax" role="tabpanel" data-result-panel="syntax" hidden>
+                            <div class="panel-intro"><span class="panel-icon panel-icon-blue">⌁</span><div><h4>Análisis sintáctico</h4><p>Gramática y estructura de las reglas.</p></div></div>
+                            <div class="empty-state" id="syntax-results">Ejecuta la validación para revisar la sintaxis.</div>
+                        </section>
+                        <section class="result-panel" id="result-panel-semantic" role="tabpanel" data-result-panel="semantic" hidden>
+                            <div class="panel-intro"><span class="panel-icon panel-icon-gold">✓</span><div><h4>Análisis semántico</h4><p>Edades, dosis y reglas duplicadas.</p></div></div>
+                            <div class="empty-state" id="semantic-results">Ejecuta la validación para revisar las reglas.</div>
+                        </section>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <footer class="page-footer">
+            <span>SaludVac <b>·</b> Área de administración</span>
+            <span>Las reglas de ejemplo no constituyen recomendaciones médicas.</span>
+        </footer>
+    </main>
+</body>
+</html>

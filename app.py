@@ -13,6 +13,11 @@ def inicio():
     return render_template("index.html")
 
 
+@app.route("/administracion")
+def administracion():
+    return render_template("admin.html")
+
+
 @app.route("/api/analizar", methods=["POST"])
 def analizar():
     datos = request.get_json(silent=True) or {}
