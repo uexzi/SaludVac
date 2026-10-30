@@ -7,6 +7,54 @@ from compiler.semantic import analizar_semantica
 
 app = Flask(__name__)
 
+USUARIOS = [
+    {
+        "id": 1,
+        "nombre": "Dra. Andrea López",
+        "correo": "andrea.lopez@saludvac.demo",
+        "rol": "ADMINISTRADOR",
+        "estado": "ACTIVO",
+    },
+    {
+        "id": 2,
+        "nombre": "Carlos Ramírez",
+        "correo": "carlos.ramirez@saludvac.demo",
+        "rol": "PERSONAL_DE_SALUD",
+        "estado": "ACTIVO",
+    },
+    {
+        "id": 3,
+        "nombre": "Lucía Torres",
+        "correo": "lucia.torres@saludvac.demo",
+        "rol": "PERSONAL_DE_SALUD",
+        "estado": "INACTIVO",
+    },
+]
+SIGUIENTE_USUARIO_ID = 4
+
+
+def validar_usuario(datos):
+    nombre = datos.get("nombre", "").strip()
+    correo = datos.get("correo", "").strip().lower()
+    rol = datos.get("rol", "")
+    estado = datos.get("estado", "")
+
+    if not nombre or not correo or "@" not in correo:
+        return None, "Ingresa un nombre y correo válidos."
+
+    if rol not in {"ADMINISTRADOR", "PERSONAL_DE_SALUD"}:
+        return None, "Selecciona un rol válido."
+
+    if estado not in {"ACTIVO", "INACTIVO"}:
+        return None, "Selecciona un estado válido."
+
+    return {
+        "nombre": nombre,
+        "correo": correo,
+        "rol": rol,
+        "estado": estado,
+    }, None
+
 
 @app.route("/")
 def inicio():
@@ -16,6 +64,57 @@ def inicio():
 @app.route("/administracion")
 def administracion():
     return render_template("admin.html")
+
+
+@app.route("/api/usuarios", methods=["GET", "POST"])
+def gestionar_usuarios():
+    global SIGUIENTE_USUARIO_ID
+
+    if request.method == "GET":
+        return jsonify({"usuarios": USUARIOS})
+
+    usuario, error = validar_usuario(request.get_json(silent=True) or {})
+
+    if error:
+        return jsonify({"error": error}), 400
+
+    if any(actual["correo"] == usuario["correo"] for actual in USUARIOS):
+        return jsonify({"error": "Ya existe un usuario con ese correo."}), 409
+
+    usuario["id"] = SIGUIENTE_USUARIO_ID
+    SIGUIENTE_USUARIO_ID += 1
+    USUARIOS.append(usuario)
+
+    return jsonify({"usuario": usuario}), 201
+
+
+@app.route("/api/usuarios/<int:usuario_id>", methods=["PUT", "DELETE"])
+def gestionar_usuario(usuario_id):
+    usuario_actual = next(
+        (usuario for usuario in USUARIOS if usuario["id"] == usuario_id),
+        None,
+    )
+
+    if usuario_actual is None:
+        return jsonify({"error": "Usuario no encontrado."}), 404
+
+    if request.method == "DELETE":
+        USUARIOS.remove(usuario_actual)
+        return jsonify({"mensaje": "Usuario eliminado correctamente."})
+
+    usuario, error = validar_usuario(request.get_json(silent=True) or {})
+
+    if error:
+        return jsonify({"error": error}), 400
+
+    if any(
+        actual["correo"] == usuario["correo"] and actual["id"] != usuario_id
+        for actual in USUARIOS
+    ):
+        return jsonify({"error": "Ya existe un usuario con ese correo."}), 409
+
+    usuario_actual.update(usuario)
+    return jsonify({"usuario": usuario_actual})
 
 
 @app.route("/api/analizar", methods=["POST"])

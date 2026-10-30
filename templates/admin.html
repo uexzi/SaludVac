@@ -8,6 +8,7 @@
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/styles.css') }}">
     <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/users.js') }}" defer></script>
 </head>
 <body class="admin-app">
     <aside class="sidebar">
@@ -46,6 +47,12 @@
                 Reglas DSL
                 <span class="nav-active-dot"></span>
             </a>
+            <a href="#usuarios" class="nav-item">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </span>
+                Gestión de usuarios
+            </a>
         </nav>
 
         <div class="sidebar-card">
@@ -80,6 +87,36 @@
                 <p>Esta área está destinada al personal administrador que mantiene el lenguaje de reglas de SaludVac.</p>
             </div>
             <span class="admin-hero-icon">⌘</span>
+        </section>
+
+        <section class="user-management" id="usuarios">
+            <div class="section-heading user-management-heading">
+                <div>
+                    <p class="section-eyebrow"><span></span> ACCESO AL SISTEMA</p>
+                    <h2>Gestión de usuarios</h2>
+                    <p>Crea, actualiza o elimina las cuentas que pueden acceder a SaludVac.</p>
+                </div>
+                <button class="create-user-button" id="open-user-dialog" type="button"><span>＋</span> Crear usuario</button>
+            </div>
+
+            <div class="user-management-card">
+                <div class="user-management-status" id="users-status" role="status">
+                    <span>i</span> Cargando usuarios...
+                </div>
+                <div class="users-table-wrap">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Rol</th>
+                                <th>Estado</th>
+                                <th><span class="sr-only">Acciones</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-list"></tbody>
+                    </table>
+                </div>
+            </div>
         </section>
 
         <section class="workspace" id="compilador">
@@ -162,5 +199,56 @@ A_LOS 18 MESES: REFUERZO_DPT, DOSIS 1;</textarea>
             <span>Las reglas de ejemplo no constituyen recomendaciones médicas.</span>
         </footer>
     </main>
+
+    <dialog class="user-dialog" id="user-dialog" aria-labelledby="user-dialog-title">
+        <form class="user-form" id="user-form" method="dialog">
+            <div class="user-dialog-header">
+                <div>
+                    <p class="section-eyebrow"><span></span> GESTIÓN DE ACCESO</p>
+                    <h2 id="user-dialog-title">Crear usuario</h2>
+                    <p id="user-dialog-description">Registra una cuenta para el sistema.</p>
+                </div>
+                <button class="close-dialog" id="close-user-dialog" type="button" aria-label="Cerrar">×</button>
+            </div>
+            <input id="user-id" type="hidden">
+            <label for="user-name">Nombre completo
+                <input id="user-name" type="text" autocomplete="name" required maxlength="80" placeholder="Ej. Dra. María González">
+            </label>
+            <label for="user-email">Correo electrónico
+                <input id="user-email" type="email" autocomplete="email" required maxlength="120" placeholder="nombre@institucion.mx">
+            </label>
+            <div class="user-form-grid">
+                <label for="user-role">Rol
+                    <select id="user-role" required>
+                        <option value="PERSONAL_DE_SALUD">Personal de salud</option>
+                        <option value="ADMINISTRADOR">Administrador</option>
+                    </select>
+                </label>
+                <label for="user-state">Estado
+                    <select id="user-state" required>
+                        <option value="ACTIVO">Activo</option>
+                        <option value="INACTIVO">Inactivo</option>
+                    </select>
+                </label>
+            </div>
+            <p class="user-form-message" id="user-form-message" role="alert"></p>
+            <div class="user-form-actions">
+                <button class="dialog-cancel" id="cancel-user-dialog" type="button">Cancelar</button>
+                <button class="dialog-submit" id="submit-user-form" type="submit">Crear usuario</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog class="user-dialog delete-dialog" id="delete-user-dialog" aria-labelledby="delete-dialog-title">
+        <div class="delete-dialog-content">
+            <span class="delete-warning-icon">!</span>
+            <h2 id="delete-dialog-title">¿Eliminar usuario?</h2>
+            <p id="delete-user-message">Esta acción eliminará el acceso del usuario seleccionado.</p>
+            <div class="user-form-actions">
+                <button class="dialog-cancel" id="cancel-delete-dialog" type="button">Cancelar</button>
+                <button class="delete-confirm" id="confirm-delete-user" type="button">Eliminar usuario</button>
+            </div>
+        </div>
+    </dialog>
 </body>
 </html>
